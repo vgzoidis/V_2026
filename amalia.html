@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Ami</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Pacifico&display=swap');
+
+        :root {
+            --bg-color: #ffe6ea;
+            --accent: #ff4d6d;
+            --text: #590d22;
+            --paper: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text);
+            font-family: 'Courier Prime', monospace;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- SCREEN 1: THE PLAYFUL GATEKEEPER --- */
+        #gatekeeper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .btn-container {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            height: 100px;
+            width: 400px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.1rem;
+            border: 3px solid var(--text);
+            border-radius: 50px;
+            background: var(--paper);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 4px 4px 0px var(--text);
+            font-weight: bold;
+        }
+
+        button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--text);
+        }
+
+        #btn-yes {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--text);
+        }
+
+        #btn-no {
+            background-color: #ccc;
+        }
+
+        /* --- SCREEN 2: THE MAIN CONTENT --- */
+        #main-content {
+            display: none; /* Hidden initially */
+            width: 100%;
+            max-width: 800px;
+            padding: 40px 20px;
+            text-align: center;
+            animation: fadeIn 2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .polaroid-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 50px 15px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+            transform: rotate(-2deg);
+            transition: transform 0.3s;
+            width: 200px;
+        }
+
+        .polaroid:nth-child(2) { transform: rotate(3deg); }
+        .polaroid:nth-child(3) { transform: rotate(-1deg); }
+        
+        .polaroid:hover {
+            transform: scale(1.05) rotate(0deg);
+            z-index: 10;
+        }
+
+        /* IMAGE PLACEHOLDER STYLES */
+        .photo-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 0.8rem;
+            border: 2px dashed #ccc;
+            position: relative;
+        }
+
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .photo-placeholder span {
+            z-index: 1;
+        }
+
+        /* Hide placeholder text when image loads */
+        .photo-placeholder img[src]:not([src=""]):not([src="photo1.jpg"]):not([src="photo2.jpg"]):not([src="photo3.jpg"]) + span {
+            display: none;
+        }
+
+        /* --- THE HIDDEN MESSAGE --- */
+        .secret-section {
+            margin-top: 60px;
+            padding-bottom: 50px;
+        }
+
+        .danger-btn {
+            background: #ff0000;
+            color: white;
+            font-size: 0.8rem;
+            padding: 10px 20px;
+        }
+
+        #hidden-message {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 1s ease-out;
+            text-align: left;
+            background: white;
+            padding: 0 40px;
+            margin-top: 20px;
+            border-radius: 10px;
+            border: 2px solid var(--text);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+        }
+
+        #hidden-message.revealed {
+            max-height: 1000px; /* Big enough to show content */
+            padding: 40px;
+        }
+
+        .heartfelt-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .signature {
+            margin-top: 20px;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="gatekeeper">
+        <p>ΕΡΩΤΗΣΗ ΑΣΦΑΛΕΙΑΣ</p>
+        <h1>Eisai to kalyterotero koritsi tou kosmou??</h1>
+        <div class="btn-container">
+            <button id="btn-yes">Φυσικά, με λένε Άμι</button>
+            <button id="btn-no">Μπα, είμαι κάποια άλλη</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <h1>Happy Valentine's Day, Ami mou!</h1>
+        <p>Ελπίζω να σου άρεσε η κάρτα που θα σου φτιάξω στο μέλλον!</p>
+
+        <div class="polaroid-grid">
+            <div class="polaroid">
+                <div class="photo-placeholder">
+                    <img src="photo1.jpg" alt="Us 1" onerror="this.style.display='none'"> 
+                </div>
+                <div class="caption">Η πρώτη μας φορά που ήμασταν cringe</div>
+            </div>
+
+            <div class="polaroid">
+                <div class="photo-placeholder">
+                    <img src="photo2.jpg" alt="Us 2" onerror="this.style.display='none'">
+                </div>
+                <div class="caption">Εκείνη τη φορά που το ξανακάναμε &lt3 </div>
+            </div>
+
+            <div class="polaroid">
+                <div class="photo-placeholder">
+                    <img src="photo3.jpg" alt="Us 3" onerror="this.style.display='none'">
+                </div>
+                <div class="caption">Η πιο πρόσφατη και προσωπικά αγαπημένη μου</div>
+            </div>
+        </div>
+
+        <div class="secret-section">
+            <p style="font-size: 0.8rem; opacity: 0.5;">ΚΟΥΜΠΙ ΓΙΑ ΕΙΔΙΚΕΣ ΚΑΤΑΣΤΑΣΕΙΣ: ΜΗΝ ΑΓΓΙΖΕΤΕ</p>
+            <button class="danger-btn" onclick="revealSecret()">⚠ ΑΥΤΟΚΑΤΑΣΤΡΟΦΗ ⚠</button>
+            
+            <div id="hidden-message">
+                <h2>Εντάξει, δεν είναι κουμπί αυτοκαταστροφής...</h2>
+                <p class="heartfelt-text">
+                    Έκρυψα αυτό το κομμάτι επειδή μερικές φορές μου είναι δύσκολο να σου πω όλα αυτά που νιώθω.<br><br>
+
+                    Όταν με κοιτάς και μου χαμογελάς με κάνεις να νιώθω πραγματικά ξεχωριστός.
+                    Όταν είμαι μαζί σου νίωθω ότι μπορώ να είμαι ο ευατός μου.
+                    Με κάνεις να νιώθω ασφαλής με τρόπους που δεν ήξερα ότι χρειαζόμουν.
+                    Με βοηθάς να γίνω καλύτερος άθρωπος, αλλά 
+                    ακόμα και όταν σε πειράζω στο κρεβάτι 
+                    ή όταν κάνω τα κακά αστεία μου, δεν το βάζεις κάτω. 
+                    Είσαι ό,τι καλύτερο μου έχει συμβεί.<br><br>
+                    
+                    Σε ευχαριστώ που είσαι η κοπέλα μου, η καλύτερή μου φίλη και ο λόγος που η καρδία μου δεν παύει χτυπάει δυνατά.
+                </p>
+                <div class="signature">- o Billhs</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // THE RUNAWAY BUTTON SCRIPT
+        const noBtn = document.getElementById('btn-no');
+        const yesBtn = document.getElementById('btn-yes');
+        const gatekeeper = document.getElementById('gatekeeper');
+        const mainContent = document.getElementById('main-content');
+
+        // Make the "No" button run away on hover and touch
+        function moveNoButton() {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        }
+
+        noBtn.addEventListener('mouseover', moveNoButton);
+        
+        // Handle mobile touch events
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            moveNoButton();
+        });
+
+        // Prevent the "No" button from advancing the page on click/tap
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Do nothing - just prevent progression
+        });
+
+        // Unlock the site
+        yesBtn.addEventListener('click', () => {
+            gatekeeper.style.transform = 'translateY(-100%)';
+            setTimeout(() => {
+                gatekeeper.style.display = 'none';
+                mainContent.style.display = 'block';
+            }, 800);
+        });
+
+        // Reveal the secret message
+        function revealSecret() {
+            const secret = document.getElementById('hidden-message');
+            const btn = document.querySelector('.danger-btn');
+            
+            secret.classList.add('revealed');
+            btn.style.display = 'none'; // Hide the button after clicking
+            
+            // Auto scroll to the message
+            setTimeout(() => {
+                secret.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    </script>
+</body>
+</html>
